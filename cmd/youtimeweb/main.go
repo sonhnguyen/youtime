@@ -12,6 +12,7 @@ import (
 	"github.com/gorilla/context"
 	"github.com/justinas/alice"
 	"github.com/kardianos/osext"
+	"github.com/rs/cors"
 	"github.com/spf13/viper"
 )
 
@@ -82,6 +83,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("cannot retrieve present working directory: %i", 0600, nil)
 	}
+
 	err = LoadConfiguration(pwd)
 	if err != nil && os.Getenv("PORT") == "" {
 		fmt.Println("panicking")
@@ -97,7 +99,9 @@ func main() {
 	r.Get("/video/id/:id", common.Then(a.Wrap(a.GetVideoByIdHandler())))
 	r.Post("/video/:id", common.Then(a.Wrap(a.PostCommentByIdHandler())))
 
-	err = http.ListenAndServe(":"+a.config.Port, r)
+	// Add CORS support (Cross Origin Resource Sharing)
+	handler := cors.Default().Handler(r)
+	err = http.ListenAndServe(":"+a.config.Port, handler)
 	if err != nil {
 		fmt.Errorf("error on serve server %s", err)
 	}

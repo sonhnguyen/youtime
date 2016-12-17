@@ -85,6 +85,16 @@
 			"Rev": "017119f7a78a0b5fc0ea39ef6be09f03acf3345d"
 		},
 		{
+			"ImportPath": "github.com/rs/cors",
+			"Comment": "v1.0",
+			"Rev": "a62a804a8a009876ca59105f7899938a1349f4b3"
+		},
+		{
+			"ImportPath": "github.com/rs/xhandler",
+			"Comment": "v1.0-1-ged27b6f",
+			"Rev": "ed27b6fd65218132ee50cd95f38474a3d8a2cd12"
+		},
+		{
 			"ImportPath": "github.com/spf13/afero",
 			"Rev": "2f30b2a92c0e5700bcfe4715891adb1f2a7a406d"
 		},
@@ -107,6 +117,10 @@
 		{
 			"ImportPath": "github.com/spf13/viper",
 			"Rev": "5ed0fc31f7f453625df314d8e66b9791e8d13003"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "45e771701b814666a7eb299e6c7a57d0b1799e91"
 		},
 		{
 			"ImportPath": "golang.org/x/sys/unix",
