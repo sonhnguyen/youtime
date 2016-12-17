@@ -14,17 +14,17 @@ import (
 	"github.com/spf13/viper"
 )
 
-type youtuberConfig struct {
+type youtimeConfig struct {
 	Port   string
 	Config map[string]string
 }
 
 // App in main app
 type App struct {
-	router   *Router
-	gp       globalPresenter
-	logr     appLogger
-	youtuber youtuberConfig
+	router  *Router
+	gp      globalPresenter
+	logr    appLogger
+	youtime youtimeConfig
 }
 
 // globalPresenter contains the fields neccessary for presenting in all templates
@@ -37,20 +37,20 @@ type globalPresenter struct {
 // TODO localPresenter if we have using template
 func SetupApp(r *Router, logger appLogger, templateDirectoryPath string) *App {
 	gp := globalPresenter{
-		SiteName:    "youtuber",
+		SiteName:    "youtime",
 		Description: "Api for native app",
 		SiteURL:     "api.floatingcube.com",
 	}
-	youtuberConfig := youtuberConfig{
+	youtimeConfig := youtimeConfig{
 		Port:   viper.GetString("port"),
-		Config: viper.GetStringMapString("youtuber"),
+		Config: viper.GetStringMapString("youtime"),
 	}
 	fmt.Println(viper.GetString("port"))
 	return &App{
-		router:   r,
-		gp:       gp,
-		logr:     logger,
-		youtuber: youtuberConfig,
+		router:  r,
+		gp:      gp,
+		logr:    logger,
+		youtime: youtimeConfig,
 	}
 }
 
@@ -69,7 +69,7 @@ func main() {
 	a := SetupApp(r, logr, "")
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = a.youtuber.Port
+		port = a.youtime.Port
 		fmt.Println("port from file", port)
 	}
 
@@ -86,7 +86,7 @@ func main() {
 func LoadConfiguration(pwd string) error {
 	viper.SetConfigName("youtime-config")
 	viper.AddConfigPath(pwd)
-	devPath := pwd[:len(pwd)-3] + "src/youtuber/cmd/youtuberweb/"
+	devPath := pwd[:len(pwd)-3] + "src/youtime/cmd/youtimeweb/"
 	_, file, _, _ := runtime.Caller(1)
 	configPath := path.Dir(file)
 	viper.AddConfigPath(devPath)

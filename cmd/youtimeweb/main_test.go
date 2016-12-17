@@ -14,9 +14,9 @@ import (
 	"runtime"
 	"strings"
 	"testing"
-	"youtuber"
+	"youtime"
 
-	main "youtuber/cmd/youtuberweb"
+	main "youtime/cmd/youtimeweb"
 
 	"github.com/gorilla/context"
 	"github.com/kardianos/osext"
@@ -24,7 +24,7 @@ import (
 
 var app *main.App
 
-var resultBody = &youtuber.ResultBody{
+var resultBody = &youtime.ResultBody{
 	JSONRPC:  "2.0",
 	ID:       1234567623342432,
 	Datetime: "2016-11-24 06:04:23",

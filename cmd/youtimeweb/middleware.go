@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 	"time"
-	"youtuber"
+	"youtime"
 )
 
 const ()
@@ -16,30 +16,30 @@ type appLogger interface {
 	Log(str string, v ...interface{})
 }
 
-// youtuberLogger is a wrapper for long.Logger
-type youtuberLogger struct {
+// youtimeLogger is a wrapper for long.Logger
+type youtimeLogger struct {
 	*log.Logger
 }
 
 // Log produces a log entry with the current time prepended
-func (ml *youtuberLogger) Log(str string, v ...interface{}) {
+func (ml *youtimeLogger) Log(str string, v ...interface{}) {
 	// Prepend current time to the slice of arguments
 	v = append(v, 0)
 	copy(v[1:], v[0:])
-	v[0] = youtuber.TimeNow().Format(time.RFC3339)
+	v[0] = youtime.TimeNow().Format(time.RFC3339)
 	ml.Printf("[%s] "+str, v...)
 }
 
 // newMiddlewareLogger returns a new middlewareLogger.
-func newLogger() *youtuberLogger {
-	return &youtuberLogger{log.New(os.Stdout, "[youtuber] ", 0)}
+func newLogger() *youtimeLogger {
+	return &youtimeLogger{log.New(os.Stdout, "[youtime] ", 0)}
 }
 
 // loggerHanderGenerator prduces a loggingHandler middleware
 // loggingHandler middleware logs all request
 func (a *App) loggingHandler(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, req *http.Request) {
-		t1 := youtuber.TimeNow()
+		t1 := youtime.TimeNow()
 		a.logr.Log("Started %s %s", req.Method, req.URL.Path)
 
 		next.ServeHTTP(w, req)

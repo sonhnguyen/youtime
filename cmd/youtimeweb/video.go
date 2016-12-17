@@ -3,12 +3,12 @@ package main
 import (
 	"encoding/json"
 	"net/http"
-	"youtuber"
+	"youtime"
 )
 
 func (a *App) GetYoutubeHandler() HandlerWithError {
 	return func(w http.ResponseWriter, req *http.Request) error {
-		hello := youtuber.Youtube{String: "hello"}
+		hello := youtime.Youtube{String: "hello"}
 
 		err := json.NewEncoder(w).Encode(hello)
 		if err != nil {

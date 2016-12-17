@@ -1,4 +1,4 @@
-package youtuber
+package youtime
 
 import (
 	"errors"

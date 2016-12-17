@@ -1,4 +1,4 @@
-package youtuber_test
+package youtime_test
 
 import (
 	"fmt"
@@ -44,10 +44,10 @@ func equals(tb testing.TB, exp, act interface{}) {
 }
 
 func LoadConfiguration(pwd string) error {
-	viper.SetConfigName("youtuber-config")
+	viper.SetConfigName("youtime-config")
 	viper.AddConfigPath(pwd)
 	_, devPath, _, _ := runtime.Caller(1)
-	devPath = path.Dir(devPath) + "/cmd/youtuberweb/"
+	devPath = path.Dir(devPath) + "/cmd/youtimeweb/"
 	viper.AddConfigPath(devPath)
 	viper.SetDefault("path", devPath)
 	return viper.ReadInConfig() // Find and read the config file
