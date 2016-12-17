@@ -9,7 +9,7 @@ import (
 type Comment struct {
 	Content     string    `json:"content" bson:"content"`
 	Time        int       `json:"time" bson:"time"`
-	TimeUpdated time.Time `json:"timeupdated" bson:"timeupdated"`
+	DateCreated time.Time `json:"datecreated" bson:"timeupdated"`
 }
 
 type URL struct {

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 	"youtime"
 )
 
@@ -54,6 +55,7 @@ func (a *App) PostCommentByIdHandler() HandlerWithError {
 		var comment youtime.Comment
 
 		err := json.NewDecoder(req.Body).Decode(&comment)
+		comment.DateCreated = time.Now().UTC()
 		if err != nil {
 			a.logr.Log("error decode param: %s", err)
 			return newAPIError(400, "error param: %s", err)

@@ -36,9 +36,12 @@ func InsertCommentVideoMongo(id string, comment Comment, mongo Mongodb) error {
 	sess.SetSafe(&mgo.Safe{})
 	collection := sess.DB(mongo.Dbname).C(mongo.Collection)
 
-	video := bson.M{"_id": id}
-	commentArray := bson.M{"$push": bson.M{"comment": bson.M{"content": comment.Content, "time": comment.Time, "timeupdaed": comment.TimeUpdated}}}
-	collection.Update(video, commentArray)
+	video := bson.ObjectIdHex(id)
+	commentArray := bson.M{"$push": bson.M{"comment": bson.M{"$each": []Comment{comment}, "$sort": bson.M{"time": 1}}}}
+	err = collection.UpdateId(video, commentArray)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
