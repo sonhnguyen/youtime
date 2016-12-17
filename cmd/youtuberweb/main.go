@@ -79,7 +79,7 @@ func main() {
 	a := SetupApp(r, logr, "")
 
 	common := alice.New(context.ClearHandler, a.loggingHandler, a.recoverHandler)
-	r.Get("/video/youtube/:isd", common.Then(a.Wrap(a.GetYoutubeHandler())))
+	r.Get("/video/youtube/:id", common.Then(a.Wrap(a.GetYoutubeHandler())))
 	r.Post("/video/youtube/:id", common.Then(a.Wrap(a.PostYoutubeHandler())))
 
 	//r.ServeFiles("/static/*filepath", http.Dir(staticFilePath))
