@@ -7,6 +7,7 @@ import (
 	"os"
 	"path"
 	"runtime"
+	"youtime"
 
 	"github.com/gorilla/context"
 	"github.com/justinas/alice"
@@ -15,8 +16,11 @@ import (
 )
 
 type youtimeConfig struct {
-	Port   string
-	Config map[string]string
+	Port          string
+	URI           string
+	Dbname        string
+	Collection    string
+	IsDevelopment string
 }
 
 // App in main app
@@ -24,7 +28,8 @@ type App struct {
 	router  *Router
 	gp      globalPresenter
 	logr    appLogger
-	youtime youtimeConfig
+	mongodb youtime.Mongodb
+	config  youtimeConfig
 }
 
 // globalPresenter contains the fields neccessary for presenting in all templates
@@ -36,21 +41,39 @@ type globalPresenter struct {
 
 // TODO localPresenter if we have using template
 func SetupApp(r *Router, logger appLogger, templateDirectoryPath string) *App {
+	var config youtimeConfig
+	if viper.GetBool("isDevelopment") {
+		config = youtimeConfig{
+			IsDevelopment: viper.GetString("isDevelopment"),
+			Port:          viper.GetString("port"),
+			URI:           viper.GetString("uri"),
+			Dbname:        viper.GetString("dbname"),
+			Collection:    viper.GetString("collection"),
+		}
+	} else {
+		config = youtimeConfig{
+			IsDevelopment: os.Getenv("isDevelopment"),
+			Port:          os.Getenv("port"),
+			URI:           os.Getenv("uri"),
+			Dbname:        os.Getenv("dbname"),
+			Collection:    os.Getenv("collection"),
+		}
+	}
+
+	mongo := youtime.Mongodb{URI: config.URI, Dbname: config.Dbname, Collection: config.Collection}
+
 	gp := globalPresenter{
 		SiteName:    "youtime",
 		Description: "Api for native app",
 		SiteURL:     "api.floatingcube.com",
 	}
-	youtimeConfig := youtimeConfig{
-		Port:   viper.GetString("port"),
-		Config: viper.GetStringMapString("youtime"),
-	}
-	fmt.Println(viper.GetString("port"))
+
 	return &App{
 		router:  r,
 		gp:      gp,
 		logr:    logger,
-		youtime: youtimeConfig,
+		config:  config,
+		mongodb: mongo,
 	}
 }
 
@@ -67,17 +90,13 @@ func main() {
 	r := NewRouter()
 	logr := newLogger()
 	a := SetupApp(r, logr, "")
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = a.youtime.Port
-		fmt.Println("port from file", port)
-	}
 
 	common := alice.New(context.ClearHandler, a.loggingHandler, a.recoverHandler)
-	r.Get("/video/youtube/:id", common.Then(a.Wrap(a.GetYoutubeHandler())))
-	r.Post("/video/youtube/:id", common.Then(a.Wrap(a.PostYoutubeHandler())))
-	fmt.Println("port from var config", port)
-	err = http.ListenAndServe(":"+port, r)
+	r.Get("/video/link", common.Then(a.Wrap(a.GetVideoByLinkHandler())))
+	r.Get("/video/id/:id", common.Then(a.Wrap(a.GetVideoByIdHandler())))
+	r.Post("/video/:id", common.Then(a.Wrap(a.PostCommentByIdHandler())))
+
+	err = http.ListenAndServe(":"+a.config.Port, r)
 	if err != nil {
 		fmt.Errorf("error on serve server %s", err)
 	}
