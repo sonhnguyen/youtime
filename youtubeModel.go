@@ -7,14 +7,15 @@ import (
 )
 
 type Comment struct {
-	Content     string    `json:"content" bson:"content"`
-	Time        int       `json:"time" bson:"time"`
-	DateCreated time.Time `json:"datecreated" bson:"timeupdated"`
+	ID          bson.ObjectId `json:"id" bson:"_id"`
+	Content     string        `json:"content" bson:"content"`
+	Time        int           `json:"time" bson:"time"`
+	DateCreated time.Time     `json:"datecreated" bson:"timeupdated"`
 }
 
 type URL struct {
 	Site string `json:"site" bson:"site"`
-	Link string `json:"link" bson:"link"`
+	ID   string `json:"id" bson:"id"`
 }
 
 type Video struct {

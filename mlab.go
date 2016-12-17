@@ -35,7 +35,7 @@ func InsertCommentVideoMongo(id string, comment Comment, mongo Mongodb) error {
 	if err != nil {
 		return err
 	}
-
+	comment.ID = bson.NewObjectId()
 	defer sess.Close()
 	sess.SetSafe(&mgo.Safe{})
 	collection := sess.DB(mongo.Dbname).C(mongo.Collection)
