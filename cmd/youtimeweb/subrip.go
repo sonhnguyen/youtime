@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 	"youtime"
@@ -31,7 +30,6 @@ func (a *App) GetSubtitleByIDHandler() HandlerWithError {
 			if end-start > 5000*time.Millisecond {
 				end = start + 5000*time.Millisecond
 			}
-			fmt.Println("%v %v %v", i, start, end)
 			srtFile = append(srtFile, youtime.Subtitle{Number: i + 1, Text: v.Content, Start: start, End: end})
 		}
 

@@ -28,6 +28,8 @@
 
 - GET /video/id/58556840d48cdc00042d8565
 
+- GET /video/id/58556840d48cdc00042d8565/subtitle
+
 - POST /video/58556840d48cdc00042d8565
 
   - Request body JSON: `{"content":"hello","time":1}`

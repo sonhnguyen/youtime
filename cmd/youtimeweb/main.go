@@ -97,8 +97,8 @@ func main() {
 	common := alice.New(context.ClearHandler, a.loggingHandler, a.recoverHandler)
 	r.Get("/video/link", common.Then(a.Wrap(a.GetVideoByLinkHandler())))
 	r.Get("/video/id/:id", common.Then(a.Wrap(a.GetVideoByIdHandler())))
+	r.Get("/video/id/:id/subtitle", common.Then(a.Wrap(a.GetSubtitleByIDHandler())))
 	r.Post("/video/:id", common.Then(a.Wrap(a.PostCommentByIdHandler())))
-	r.Get("/video/subtitle/:id", common.Then(a.Wrap(a.GetSubtitleByIDHandler())))
 
 	// Add CORS support (Cross Origin Resource Sharing)
 	handler := cors.Default().Handler(r)
