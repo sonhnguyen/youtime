@@ -2,6 +2,7 @@ package youtime
 
 import (
 	"fmt"
+	"time"
 
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -35,6 +36,7 @@ func InsertCommentVideoMongo(id string, comment Comment, mongo Mongodb) error {
 	if err != nil {
 		return err
 	}
+	comment.TimeCreated = time.Now().UTC()
 	comment.ID = bson.NewObjectId()
 	defer sess.Close()
 	sess.SetSafe(&mgo.Safe{})

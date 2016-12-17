@@ -10,7 +10,7 @@ type Comment struct {
 	ID          bson.ObjectId `json:"id" bson:"_id"`
 	Content     string        `json:"content" bson:"content"`
 	Time        int           `json:"time" bson:"time"`
-	DateCreated time.Time     `json:"datecreated" bson:"timeupdated"`
+	TimeCreated time.Time     `json:"timecreated" bson:"timecreated"`
 }
 
 type URL struct {
