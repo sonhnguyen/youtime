@@ -60,7 +60,7 @@ func main() {
 		log.Fatalf("cannot retrieve present working directory: %i", 0600, nil)
 	}
 	err = LoadConfiguration(pwd)
-	if err != nil {
+	if err != nil && os.Getenv("PORT") == "" {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
 
@@ -91,6 +91,5 @@ func LoadConfiguration(pwd string) error {
 	configPath := path.Dir(file)
 	viper.AddConfigPath(devPath)
 	viper.AddConfigPath(configPath)
-	fmt.Println("all keys", pwd, devPath, configPath)
 	return viper.ReadInConfig() // Find and read the config file
 }
