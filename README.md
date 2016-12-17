@@ -2,30 +2,32 @@
 
 ```JSON
 {
-  "id": "585557a9ed4f1fa336b9e1fd",
-  "url": {
-    "site": "youtube",
-    "link": "asldasd"
-  },
-  "comment": [
-    {
-      "content": "hello",
-      "time": 1,
-      "datecreated": "2016-12-17T22:35:22.471+07:00"
+    "_id" : ObjectId("58556840d48cdc00042d8565"),
+    "url" : {
+        "site" : "youtube",
+        "link" : "asldasd"
     },
-    {
-      "content": "hello",
-      "time": 2,
-      "datecreated": "2016-12-17T22:35:03.873+07:00"
-    }
-  ]
+    "comment" : [ 
+        {
+            "_id" : ObjectId("585572983f57a100041a5713"),
+            "content" : "hello",
+            "time" : 1,
+            "timeupdated" : ISODate("2016-12-17T17:15:03.945Z")
+        }, 
+        {
+            "_id" : ObjectId("5855729b3f57a100041a5714"),
+            "content" : "hello",
+            "time" : 2,
+            "timeupdated" : ISODate("2016-12-17T17:15:07.854Z")
+        }
+    ]
 }
 ```
 
-- GET /video/link?site=youtube&link=asldasd
+- GET /video/link?site=youtube&id=asldasd
 
-- GET /video/id/585557a9ed4f1fa336b9e1fd
+- GET /video/id/58556840d48cdc00042d8565
 
-- POST /video/id/585557a9ed4f1fa336b9e1fd
+- POST /video/id/58556840d48cdc00042d8565
 
   - Request body JSON: `{"content":"hello","time":1}`
