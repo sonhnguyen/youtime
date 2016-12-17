@@ -84,6 +84,7 @@ func main() {
 	}
 	err = LoadConfiguration(pwd)
 	if err != nil && os.Getenv("PORT") == "" {
+		fmt.Println("panicking")
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
 
