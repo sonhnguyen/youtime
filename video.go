@@ -9,8 +9,7 @@ func GetVideoByLink(site, link string, mongodb Mongodb) (Video, error) {
 	if result.Id == "" {
 		url := URL{Site: site, Link: link}
 		commend := []Comment{}
-		result = Video{Url: url, Comment: commend}
-		err = CreateVideoMongo(result, mongodb)
+		result, err = CreateVideoMongo(Video{Url: url, Comment: commend}, mongodb)
 		if err != nil {
 			return Video{}, err
 		}

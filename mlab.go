@@ -13,17 +13,18 @@ type Mongodb struct {
 	Collection string
 }
 
-func CreateVideoMongo(item Video, mongo Mongodb) error {
+func CreateVideoMongo(item Video, mongo Mongodb) (Video, error) {
 	sess, err := mgo.Dial(mongo.URI)
 	if err != nil {
-		return err
+		return Video{}, err
 	}
 
 	defer sess.Close()
 	sess.SetSafe(&mgo.Safe{})
 	collection := sess.DB(mongo.Dbname).C(mongo.Collection)
-	collection.Insert(&Video{Id: bson.NewObjectId(), Url: item.Url})
-	return nil
+	newVideo := Video{Id: bson.NewObjectId(), Url: item.Url}
+	collection.Insert(&newVideo)
+	return newVideo, nil
 }
 
 func InsertCommentVideoMongo(id string, comment Comment, mongo Mongodb) error {
