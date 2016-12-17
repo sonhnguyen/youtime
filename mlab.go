@@ -23,7 +23,10 @@ func CreateVideoMongo(item Video, mongo Mongodb) (Video, error) {
 	sess.SetSafe(&mgo.Safe{})
 	collection := sess.DB(mongo.Dbname).C(mongo.Collection)
 	newVideo := Video{Id: bson.NewObjectId(), Url: item.Url}
-	collection.Insert(&newVideo)
+	err = collection.Insert(&newVideo)
+	if err != nil {
+		return Video{}, err
+	}
 	return newVideo, nil
 }
 
@@ -50,14 +53,22 @@ func GetVideoByIdMongo(id string, mongo Mongodb) (Video, error) {
 	var result Video
 	sess, err := mgo.Dial(mongo.URI)
 	if err != nil {
-		fmt.Printf("Can't connect to mongo, go error %v\n", err)
-		return Video{}, nil
+		return Video{}, err
 	}
 
 	defer sess.Close()
 	sess.SetSafe(&mgo.Safe{})
 	collection := sess.DB(mongo.Dbname).C(mongo.Collection)
-	collection.FindId(bson.ObjectIdHex(id)).One(&result)
+
+	if bson.IsObjectIdHex(id) {
+		err = collection.FindId(bson.ObjectIdHex(id)).One(&result)
+		if err != nil {
+			return Video{}, err
+		}
+	} else {
+		return Video{}, fmt.Errorf("Invalid input in ID %s", id)
+	}
+
 	return result, nil
 }
 
@@ -65,13 +76,16 @@ func GetVideoByLinkMongo(url URL, mongo Mongodb) (Video, error) {
 	var result Video
 	sess, err := mgo.Dial(mongo.URI)
 	if err != nil {
-		fmt.Printf("Can't connect to mongo, go error %v\n", err)
-		return Video{}, nil
+		return Video{}, err
 	}
 
 	defer sess.Close()
 	sess.SetSafe(&mgo.Safe{})
 	collection := sess.DB(mongo.Dbname).C(mongo.Collection)
-	collection.Find(bson.M{"url": url}).One(&result)
+	err = collection.Find(bson.M{"url": url}).One(&result)
+	if err != nil {
+		return Video{}, err
+	}
+
 	return result, nil
 }
