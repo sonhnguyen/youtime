@@ -23,7 +23,7 @@ func CreateVideoMongo(item Video, mongo Mongodb) (Video, error) {
 	defer sess.Close()
 	sess.SetSafe(&mgo.Safe{})
 	collection := sess.DB(mongo.Dbname).C(mongo.Collection)
-	newVideo := Video{Id: bson.NewObjectId(), Url: item.Url}
+	newVideo := Video{Id: bson.NewObjectId(), Url: item.Url, Comment: item.Comment}
 	err = collection.Insert(&newVideo)
 	if err != nil {
 		return Video{}, err
