@@ -1,3 +1,7 @@
 {
-	"port":3000,
+	"port": "3000",
+	"youtuber" : {
+		"PAPERTRAIL_API_TOKEN": "9RyBPtzUxHNUWiZtXR",
+		"MONGODB_URI": "mongodb://heroku_fvcm77v2:d6b7oa12u6l2f9nb80d7bp2b03@ds111748.mlab.com:11748/heroku_fvcm77v2"
+	}
 }
