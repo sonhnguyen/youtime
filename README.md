@@ -21,7 +21,8 @@
     }
 
 - GET /video/link?site=youtube&link=asldasd
+
 - GET /video/id/585557a9ed4f1fa336b9e1fd
+
 - POST /video/id/585557a9ed4f1fa336b9e1fd
-  - Request body JSON:
-  `{"content":"hello","time":1}`
+  - Request body JSON: `{"content":"hello","time":1}`
