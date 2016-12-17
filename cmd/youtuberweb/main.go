@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"path"
 	"runtime"
 
@@ -17,10 +18,8 @@ import (
 const isDevelopment = true
 
 type youtuberConfig struct {
-	expireTime   int
-	cookieSecret string
-	isProduction bool
-	config       map[string]string
+	Port   string
+	Config map[string]string
 }
 
 // App in main app
@@ -51,7 +50,8 @@ func SetupApp(r *Router, logger appLogger, templateDirectoryPath string) *App {
 		SiteURL:     "api.floatingcube.com",
 	}
 	youtuberConfig := youtuberConfig{
-		config: viper.GetStringMapString("youtuber"),
+		Port:   viper.GetString("port"),
+		Config: viper.GetStringMapString("youtuber"),
 	}
 	return &App{
 		router:   r,
@@ -67,7 +67,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("cannot retrieve present working directory: %i", 0600, nil)
 	}
-
 	err = LoadConfiguration(pwd)
 	if err != nil && viper.GetBool("isProduction") {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
@@ -77,21 +76,23 @@ func main() {
 	r := NewRouter()
 	logr := newLogger()
 	a := SetupApp(r, logr, "")
+	port, found := os.Getenv("PORT")
+	if !found {
+		port = a.youtuber.Port
+	}
 
 	common := alice.New(context.ClearHandler, a.loggingHandler, a.recoverHandler)
 	r.Get("/video/youtube/:id", common.Then(a.Wrap(a.GetYoutubeHandler())))
 	r.Post("/video/youtube/:id", common.Then(a.Wrap(a.PostYoutubeHandler())))
 
-	//r.ServeFiles("/static/*filepath", http.Dir(staticFilePath))
-
-	err = http.ListenAndServe(":3000", r)
+	err = http.ListenAndServe(":"+port, r)
 	if err != nil {
 		fmt.Errorf("error on serve server %s", err)
 	}
 }
 
 func LoadConfiguration(pwd string) error {
-	viper.SetConfigName("youtuber-config")
+	viper.SetConfigName("youtime-config")
 	viper.AddConfigPath(pwd)
 	devPath := pwd[:len(pwd)-3] + "/src/youtuber/cmd/youtuberweb/"
 	_, file, _, _ := runtime.Caller(1)
