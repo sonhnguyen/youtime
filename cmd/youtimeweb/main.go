@@ -53,7 +53,7 @@ func SetupApp(r *Router, logger appLogger, templateDirectoryPath string) *App {
 	} else {
 		config = youtimeConfig{
 			IsDevelopment: os.Getenv("isDevelopment"),
-			Port:          os.Getenv("port"),
+			Port:          os.Getenv("PORT"),
 			URI:           os.Getenv("uri"),
 			Dbname:        os.Getenv("dbname"),
 			Collection:    os.Getenv("collection"),
