@@ -37,10 +37,10 @@ func GetVideoById(id string, mongodb Mongodb) (Video, error) {
 	}
 	return result, nil
 }
-func PostCommentById(id string, comment Comment, mongodb Mongodb) error {
-	err := InsertCommentVideoMongo(id, comment, mongodb)
+func PostCommentById(id string, comment Comment, mongodb Mongodb) (Video, error) {
+	result, err := InsertCommentVideoMongo(id, comment, mongodb)
 	if err != nil {
-		return err
+		return Video{}, err
 	}
-	return nil
+	return result, nil
 }

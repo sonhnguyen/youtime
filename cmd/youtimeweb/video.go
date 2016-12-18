@@ -105,7 +105,13 @@ func (a *App) PostCommentByIdHandler() HandlerWithError {
 		params := GetParamsObj(req)
 		id := params.ByName("id")
 
-		err = youtime.PostCommentById(id, comment, a.mongodb)
+		video, err := youtime.PostCommentById(id, comment, a.mongodb)
+		if err != nil {
+			a.logr.Log("error when return json %s", err)
+			return newAPIError(404, "error when return json %s", err)
+		}
+
+		err = json.NewEncoder(w).Encode(video)
 		if err != nil {
 			a.logr.Log("error when return json %s", err)
 			return newAPIError(404, "error when return json %s", err)

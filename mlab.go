@@ -34,10 +34,10 @@ func CreateVideoMongo(item Video, mongo Mongodb) (Video, error) {
 	return newVideo, nil
 }
 
-func InsertCommentVideoMongo(id string, comment Comment, mongo Mongodb) error {
+func InsertCommentVideoMongo(id string, comment Comment, mongo Mongodb) (Video, error) {
 	sess, err := mgo.Dial(mongo.URI)
 	if err != nil {
-		return err
+		return Video{}, err
 	}
 	comment.TimeCreated = time.Now().UTC()
 	comment.ID = bson.NewObjectId()
@@ -49,9 +49,18 @@ func InsertCommentVideoMongo(id string, comment Comment, mongo Mongodb) error {
 	commentArray := bson.M{"$push": bson.M{"comment": bson.M{"$each": []Comment{comment}, "$sort": bson.M{"time": 1}}}}
 	err = collection.UpdateId(video, commentArray)
 	if err != nil {
-		return err
+		return Video{}, err
 	}
-	return nil
+	var result Video
+	if bson.IsObjectIdHex(id) {
+		err = collection.FindId(video).One(&result)
+		if err != nil {
+			return Video{}, err
+		}
+	} else {
+		return Video{}, fmt.Errorf("Invalid input in ID %s", id)
+	}
+	return result, nil
 }
 
 func GetVideoByIdMongo(id string, mongo Mongodb) (Video, error) {
