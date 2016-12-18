@@ -98,6 +98,8 @@ func main() {
 	r.Get("/video/link", common.Then(a.Wrap(a.GetVideoByLinkHandler())))
 	r.Get("/video/id/:id", common.Then(a.Wrap(a.GetVideoByIdHandler())))
 	r.Get("/video/id/:id/subtitle", common.Then(a.Wrap(a.GetSubtitleByIDHandler())))
+	r.Get("/video", common.Then(a.Wrap(a.GetAllVideoHandler())))
+	r.Get("/video/random", common.Then(a.Wrap(a.GetRandomVideoHandler())))
 	r.Post("/video/:id", common.Then(a.Wrap(a.PostCommentByIdHandler())))
 
 	// Add CORS support (Cross Origin Resource Sharing)

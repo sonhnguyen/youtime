@@ -13,6 +13,23 @@ func GetVideoByLink(site, id string, mongodb Mongodb) (Video, error) {
 	}
 	return result, nil
 }
+
+func GetAllVideo(limit, offset string, mongodb Mongodb) ([]Video, error) {
+	result, err := GetAllVideoMongo(limit, offset, mongodb)
+	if err != nil {
+		return []Video{}, err
+	}
+	return result, nil
+}
+
+func GetRandomVideo(limit string, mongodb Mongodb) ([]Video, error) {
+	result, err := GetRandomVideoMongo(limit, mongodb)
+	if err != nil {
+		return []Video{}, err
+	}
+	return result, nil
+}
+
 func GetVideoById(id string, mongodb Mongodb) (Video, error) {
 	result, err := GetVideoByIdMongo(id, mongodb)
 	if err != nil {

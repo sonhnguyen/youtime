@@ -30,6 +30,10 @@
 
 - GET /video/id/58556840d48cdc00042d8565/subtitle
 
+- GET /video?limit=10&offset=5
+
+- GET /video/random?limit=10
+
 - POST /video/58556840d48cdc00042d8565
 
   - Request body JSON: `{"content":"hello","time":1}`

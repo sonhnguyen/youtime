@@ -28,6 +28,49 @@ func (a *App) GetVideoByLinkHandler() HandlerWithError {
 	}
 }
 
+func (a *App) GetAllVideoHandler() HandlerWithError {
+	return func(w http.ResponseWriter, req *http.Request) error {
+
+		queryValues := req.URL.Query()
+		limit := queryValues.Get("limit")
+		offset := queryValues.Get("offset")
+
+		video, err := youtime.GetAllVideo(limit, offset, a.mongodb)
+		if err != nil {
+			a.logr.Log("error when return json %s", err)
+			return newAPIError(404, "error when return json %s", err)
+		}
+
+		err = json.NewEncoder(w).Encode(video)
+		if err != nil {
+			a.logr.Log("error when return json %s", err)
+			return newAPIError(404, "error when return json %s", err)
+		}
+		return nil
+	}
+}
+
+func (a *App) GetRandomVideoHandler() HandlerWithError {
+	return func(w http.ResponseWriter, req *http.Request) error {
+
+		queryValues := req.URL.Query()
+		limit := queryValues.Get("limit")
+
+		video, err := youtime.GetRandomVideo(limit, a.mongodb)
+		if err != nil {
+			a.logr.Log("error when return json %s", err)
+			return newAPIError(404, "error when return json %s", err)
+		}
+
+		err = json.NewEncoder(w).Encode(video)
+		if err != nil {
+			a.logr.Log("error when return json %s", err)
+			return newAPIError(404, "error when return json %s", err)
+		}
+		return nil
+	}
+}
+
 func (a *App) GetVideoByIdHandler() HandlerWithError {
 	return func(w http.ResponseWriter, req *http.Request) error {
 		params := GetParamsObj(req)
