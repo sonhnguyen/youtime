@@ -20,6 +20,7 @@ type URL struct {
 
 type Video struct {
 	Id           bson.ObjectId `json:"id" bson:"_id"`
+	Title        string        `json:"title" bson:"title"`
 	Url          URL           `json:"url" bson:"url"`
 	Comment      []Comment     `json:"comment" bson:"comment"`
 	ThumbnailURL string        `json:"thumbnail" bson:"thumbnail"`

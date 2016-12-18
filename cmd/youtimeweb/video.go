@@ -12,8 +12,9 @@ func (a *App) GetVideoByLinkHandler() HandlerWithError {
 		queryValues := req.URL.Query()
 		site := queryValues.Get("site")
 		id := queryValues.Get("id")
+		title := queryValues.Get("title")
 
-		video, err := youtime.GetVideoByLink(site, id, a.mongodb)
+		video, err := youtime.GetVideoByLink(site, id, title, a.mongodb)
 		if err != nil {
 			a.logr.Log("error when return json %s", err)
 			return newAPIError(404, "error when return json %s", err)

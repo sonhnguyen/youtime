@@ -1,12 +1,12 @@
 package youtime
 
-func GetVideoByLink(site, id string, mongodb Mongodb) (Video, error) {
+func GetVideoByLink(site, id, title string, mongodb Mongodb) (Video, error) {
 	url := URL{Site: site, ID: id}
 	result, err := GetVideoByLinkMongo(url, mongodb)
 	if err != nil {
 		url := URL{Site: site, ID: id}
 		comment := []Comment{}
-		result, err = CreateVideoMongo(Video{Url: url, Comment: comment}, mongodb)
+		result, err = CreateVideoMongo(Video{Url: url, Comment: comment, Title: title}, mongodb)
 		if err != nil {
 			return Video{}, err
 		}
